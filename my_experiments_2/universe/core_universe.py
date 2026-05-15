@@ -1,0 +1,4 @@
+CORE_UNIVERSE = [
+    "AAPL","MSFT","NVDA","AMD","GOOGL",
+    "AMZN","META","TSLA"
+]

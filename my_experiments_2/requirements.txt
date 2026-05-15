@@ -1,0 +1,14 @@
+yfinance
+pandas
+numpy
+matplotlib
+scipy
+statsmodels
+scikit-learn
+ta
+arch
+# pyfolio
+quantstats
+streamlit
+plotly
+uvicorn

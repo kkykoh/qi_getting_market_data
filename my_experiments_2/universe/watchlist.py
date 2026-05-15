@@ -1,0 +1,5 @@
+WATCHLIST = [
+    "ASML",
+    "SMCI",
+    "ARM"
+]
