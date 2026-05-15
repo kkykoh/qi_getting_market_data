@@ -1,5 +1,11 @@
+from config import TOP_N_OPPORTUNITIES
+
 def rank_opportunities(results):
 
-    ranked = sorted(results, key=lambda x: x["Sharpe"], reverse=True)
+    # accounts for empty imput or missing keys
+    if not results: 
+        return []
+    
+    ranked = sorted(results, key=lambda x: x.get("Sharpe", float("-inf")), reverse=True)
 
-    return ranked[:10]
+    return ranked[:TOP_N_OPPORTUNITIES]
