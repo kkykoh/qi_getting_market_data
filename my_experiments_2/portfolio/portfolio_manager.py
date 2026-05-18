@@ -1,4 +1,1 @@
-PORTFOLIO = {
-    "BMNR": 100,
-    "PLTR": 10
-}
+from portfolio.holdings import PORTFOLIO

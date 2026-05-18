@@ -1,15 +1,17 @@
 from universe.core_universe import CORE_UNIVERSE
 from universe.watchlist import WATCHLIST
-from data.market_data import download_data
 import yfinance as yf
 from datetime import date
+from config.settings import START_DATE
 
 end = date.today().isoformat()
 
-all_stocks = list(set(CORE_UNIVERSE + WATCHLIST))
+CUSTOM = ["BMNR","COIN","HOOD","BKSY"]
+
+all_stocks = list(set(CORE_UNIVERSE + WATCHLIST + CUSTOM))
 
 # batch download all tickers into single call
-raw = yf.download(all_stocks, start="2018-01-01", end=end, group_by="ticker")
+raw = yf.download(all_stocks, start=START_DATE, end=end, group_by="ticker")
 
 for ticker in all_stocks:
     df = raw[ticker].copy()

@@ -1,4 +1,4 @@
-from config import TOP_N_OPPORTUNITIES
+from config.settings import TOP_N_OPPORTUNITIES
 
 def rank_opportunities(results):
 
