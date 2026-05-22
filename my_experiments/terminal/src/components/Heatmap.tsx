@@ -8,6 +8,7 @@ const colorFor = (pct: number | undefined) => {
     const clamp = Math.max(-5, Math.min(5, pct));
     const intensity = Math.abs(clamp) / 5;
     if (clamp >= 0) return `rgba(0, ${Math.round(180 + 60 * intensity)}, 80, ${0.225 + 0.7 * intensity})`;
+    else return `rgba(${Math.round(180 + 60 * intensity)}, 40, 40, ${0.225 + 0.7 * intensity})`;
 };
 
 type Mode = 'sectors' | 'themes';
@@ -65,7 +66,10 @@ export default function HeatMap({ onPickIndustry }: { onPickIndustry: (k: string
     );
 
     useEffect(() => {
-        if (!allTickers.length) return;
+        if (!allTickers.length) {
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         const CHUNK = 50;
         (async () => {
@@ -158,36 +162,36 @@ export default function HeatMap({ onPickIndustry }: { onPickIndustry: (k: string
                         No data. Check that api works.
                     </div>
                 )}
-                <div className="industry-grid">
-                    {groups.map(g => {
-                        const a = avg(g.tickers);
-                        return (
-                            <div key={g.key} className="industry-card"
-                                onClick={() => onPickIndustry(g.key)}
-                                style={{ borderColor: colorFor(a) }}>
-                                <div className="ind-head" style={{ background: colorFor(a) }}>
-                                    <span>{g.label}</span>
-                                    <span>{a != null ? `${a.toFixed(2)}%` : '-'}</span>
-                                </div>
-                                <div className="constituents">
-                                    {g.tickers.slice(0, 18).map(t => {
-                                        const q = quotes[t];
-                                        const p = q?.regularMarketChangePercent;
-                                        return (
-                                            <div key={t} className="ticker-cell" style={{ background: colorFor(p) }} title={q?.longName ?? t}>
-                                                <strong>{t}</strong>
-                                                <span> {p != null ? `${p.toFixed(2)}%` : '-'}</span>
-                                            </div>
-                                        );
-                                    })}
-                                    {g.tickers.length > 18 && (
-                                        <div className="ticker-cell more">+{g.tickers.length - 18}</div>
-                                    )}
-                                </div>
+            </div>
+            <div className="industry-grid">
+                {groups.map(g => {
+                    const a = avg(g.tickers);
+                    return (
+                        <div key={g.key} className="industry-card"
+                            onClick={() => onPickIndustry(g.key)}
+                            style={{ borderColor: colorFor(a) }}>
+                            <div className="ind-head" style={{ background: colorFor(a) }}>
+                                <span>{g.label}</span>
+                                <span>{a != null ? `${a.toFixed(2)}%` : '-'}</span>
                             </div>
-                        );
-                    })}
-                </div>
+                            <div className="constituents">
+                                {g.tickers.slice(0, 18).map(t => {
+                                    const q = quotes[t];
+                                    const p = q?.regularMarketChangePercent;
+                                    return (
+                                        <div key={t} className="ticker-cell" style={{ background: colorFor(p) }} title={q?.longName ?? t}>
+                                            <strong>{t}</strong>
+                                            <span> {p != null ? `${p.toFixed(2)}%` : '-'}</span>
+                                        </div>
+                                    );
+                                })}
+                                {g.tickers.length > 18 && (
+                                    <div className="ticker-cell more">+{g.tickers.length - 18}</div>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {showAdd && (
@@ -197,16 +201,16 @@ export default function HeatMap({ onPickIndustry }: { onPickIndustry: (k: string
                         <label>
                             Symbol
                             <input value={newSym} onChange={e => setNewSym(e.target.value)}
-                            placeholder="NVDA"></input>
+                                placeholder="NVDA"></input>
                         </label>
                         <label>
                             Sector
                             <input list="sectors" value={newSector} onChange={e => setNewSector(e.target.value)}
-                            placeholder="Informtaion Technology"></input>
-                        
-                        <datalist id="sectors">
-                            {sectorOptions.map(s => <option key={s} value={s}/>)}
-                        </datalist>
+                                placeholder="Informtaion Technology"></input>
+
+                            <datalist id="sectors">
+                                {sectorOptions.map(s => <option key={s} value={s} />)}
+                            </datalist>
                         </label>
                         <div className="modal-actions">
                             <button onClick={() => setShowAdd(false)}>Cancel</button>
@@ -214,25 +218,25 @@ export default function HeatMap({ onPickIndustry }: { onPickIndustry: (k: string
                         </div>
                         {universe.userTickers.length > 0 && (
                             <>
-                            <h4>Your additions</h4>
-                            <ul className="user-list">
-                                {universe.userTickers.map(u => (
-                                    <li key= {u.symbol}>
-                                        <span> {u.symbol} <em> {u.sector}</em>
-                                        </span>
-                                        <button onClick={async () => {
-                                            await removeTicker(u.symbol);
-                                            fetchUniverse().then(setUniverse);
-                                        }}
-                                        >
-                                            x
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
+                                <h4>Your additions</h4>
+                                <ul className="user-list">
+                                    {universe.userTickers.map(u => (
+                                        <li key={u.symbol}>
+                                            <span> {u.symbol} <em> {u.sector}</em>
+                                            </span>
+                                            <button onClick={async () => {
+                                                await removeTicker(u.symbol);
+                                                fetchUniverse().then(setUniverse);
+                                            }}
+                                            >
+                                                x
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </>
                         )}
-                            
+
                     </div>
                 </div>
             )}

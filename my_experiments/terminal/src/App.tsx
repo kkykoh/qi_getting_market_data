@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import HeatMap from './components/Heatmap'
 import TickerView from './components/TickerView';
+import IndustryView from './components/IndustryView';
 
 type View = 
   | { kind: 'heatmap'}
@@ -44,6 +45,12 @@ export default function App() {
       {view.kind === 'heatmap' && (
         <HeatMap onPickIndustry={k => setView ({ kind:'industry', industryKey: k})}/>
       )}
+
+      {view.kind === 'industry' &&  (
+        <IndustryView industryKey={view.industryKey} onPickTicker={s => setView({ kind:'ticker', symbol: s, from: view.industryKey})} />
+
+      )}
+      
       { view.kind === 'ticker' && <TickerView symbol={view.symbol} /> }
     </div>
   );
