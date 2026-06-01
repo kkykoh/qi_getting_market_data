@@ -1,6 +1,12 @@
 from pipeline import run_pipeline
 from config.settings import START_DATE
 
+def _card(rec):
+    print(f"\n ML Buy target: ${rec['ml_buy_target']}")
+    print(f"\n ML Sell target: ${rec['ml_sell_target']}")
+    print(f"\n ML Stop target: ${rec['stop_loss']}")
+    print("--"*30)
+
 def main():
     print("\n"+"="*30)
     print("personal quant terminal")
@@ -20,7 +26,8 @@ def main():
 
     for ticker in tickers:
         try:
-            results[ticker] = run_pipeline(ticker, start=start)
+            # results[ticker] = run_pipeline(ticker, start=start)
+            _card(run_pipeline(ticker, start=start)["rec"])
         except Exception as e:
             print(f"\n Warning: failed for {ticker} -  {e}")
 

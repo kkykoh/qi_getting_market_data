@@ -1,5 +1,6 @@
 import numpy as np
 from config.settings import RISK_FREE_RATE
+
 def sharpe_ratio(returns, risk_free_rate=0.05):
     # optimize for risk free rate
     excess_returns = returns - risk_free_rate / 252
