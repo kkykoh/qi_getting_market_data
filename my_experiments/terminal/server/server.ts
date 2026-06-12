@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import YahooFinance from 'yahoo-finance2';
 import { getSP500, groupBySector } from './universe';
 import { readUser, addUser, removeUser } from './userStore';
@@ -96,5 +97,9 @@ app.delete('/api/tickers/:symbol', async (req, res) => {
     res.json(await removeUser(req.params.symbol.toUpperCase()));
 });
 
-const PORT = 8787;
+const distDir = path.join(__dirname,'..','dist');
+app.use(express.static(distDir));
+app.get(/^(?!\/api).*/, (_req, res) => res.sendFile(path.join(distDir, 'index.html')));
+
+const PORT = Number(process.env.port) || 8787;
 app.listen(PORT, () => console.log(`api: ${PORT}`));
