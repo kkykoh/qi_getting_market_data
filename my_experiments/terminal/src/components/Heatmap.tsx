@@ -76,7 +76,7 @@ export default function HeatMap({ onPickIndustry }: { onPickIndustry: (k: string
             const m: Record<string, Quote> = {};
             for (let i = 0; i < allTickers.length; i += CHUNK) {
                 const batch = await fetchQuotes(allTickers.slice(i, i + CHUNK));
-                batch.forEach(q => { if (q?.symbol) m[q.symbol] = q; });
+                batch.forEach((q: { symbol: any; shortName?: string | undefined; longName?: string | undefined; regularMarketPrice?: number | undefined; regularMarketChangePercent?: number | undefined; regularMarketChange?: number | undefined; marketCap?: number | undefined; regularMarketVolume?: number | undefined; }) => { if (q?.symbol) m[q.symbol] = q; });
                 setQuotes({ ...m });
             }
             setLoading(false);

@@ -43,7 +43,7 @@ export function macd(candles: Candle[], fast=12, slow=26, signal=9)
     const line = ef.map((v,i) => v - es[i]);
     const sig=ema(line, signal);
     const hist = line.map((v,i)=> v- sig[i]);
-    return candles.map((c,i) => ({time: c.date, macd: line[i], signal:signal[i], hist: hist[i]}));
+    return candles.map((c,i) => ({time: c.date, macd: line[i], signal: sig[i], hist: hist[i]}));
 }
 
 export function fibRetracement(candles: Candle[]) {
