@@ -3,7 +3,7 @@
     "target": "es2023",
     // "lib": ["ES2023", "DOM"],
     "module": "commonjs",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": false,
